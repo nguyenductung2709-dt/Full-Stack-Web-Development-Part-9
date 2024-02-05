@@ -17,7 +17,7 @@ const parseArguments = (args: string[]): MultiplyValues => {
     }
   }
 
-const calculateBmi = (height: number, weight: number): String => {
+export const calculateBmi = (height: number, weight: number): String => {
     const BMI = weight / ((height/100)*(height/100));
     let Condition;
     if (BMI < 18.5) {
@@ -38,6 +38,8 @@ const calculateBmi = (height: number, weight: number): String => {
     return `${Condition} (${BMI})`;
 }
 
+
+
 try {
     const { value1, value2 } = parseArguments(process.argv);
     calculateBmi(value1, value2);
@@ -48,3 +50,4 @@ try {
     }
     console.log(errorMessage);
   }
+
