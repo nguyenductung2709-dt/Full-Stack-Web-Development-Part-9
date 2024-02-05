@@ -34,7 +34,7 @@ const parseInputs = (args: string[]): formatInput => {
     };
 };
 
-const exerciseCalculator = (target: number, days: number[]): exercisesReport => {
+export const exerciseCalculator = (target: number, days: number[]): exercisesReport => {
     const periodLength = days.length;
     const trainingDays = days.filter(d => d > 0).length;
     let totalHours = 0;

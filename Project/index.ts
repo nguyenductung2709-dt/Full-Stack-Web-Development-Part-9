@@ -1,6 +1,11 @@
 import express from 'express';
 import { calculateBmi } from './bmiCalculator';
+import { exerciseCalculator } from './exerciseCalculator';
+
 const app = express();
+
+// Middleware to parse JSON requests
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
   res.send('Hello Full Stack!');
@@ -18,11 +23,21 @@ app.get('/bmi', (req, res) => {
     height,
     weight,
     bmi: calculateBmi(height, weight)
-  }
+  };
 
-  return res.send(weightObject);
+  return res.json(weightObject);
 });
 
+app.post('/exercises', (req, res) => {
+  const { daily_exercises, target } = req.body;
+
+  if (!daily_exercises || !target) {
+    return res.status(400).send('Missing daily_exercises or target parameter');
+  }
+
+  const result = exerciseCalculator(Number(target), daily_exercises);
+  return res.json(result);
+});
 
 const PORT = 3003;
 
