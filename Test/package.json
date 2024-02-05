@@ -1,0 +1,27 @@
+{
+  "name": "full-stack-web-development-part-9",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "ts-node": "ts-node",
+    "multiply": "ts-node multiplier.ts",
+    "calculate": "ts-node calculator.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyenductung2709-dt/Full-Stack-Web-Development-Part-9.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyenductung2709-dt/Full-Stack-Web-Development-Part-9/issues"
+  },
+  "homepage": "https://github.com/nguyenductung2709-dt/Full-Stack-Web-Development-Part-9#readme",
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
