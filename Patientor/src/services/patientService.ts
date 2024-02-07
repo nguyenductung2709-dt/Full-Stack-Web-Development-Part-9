@@ -5,8 +5,8 @@ const getPatients = (): PatientsEntry[] => {
     return patientsEntries;
 };
 
-const getNonSensitivePatients = (): NonSensitivePatientsEntry[] => {
-    return patientsEntries.map(({ ssn, ...rest }) => rest);
+const getNonSensitivePatients = (): NonSensitivePatientsEntry[] => { //add non sensitive
+    return patientsEntries.map(({ ssn, ...rest }) => rest); 
 };
 
 const addPatients = (newEntry: PatientsEntry): void => {
@@ -16,5 +16,5 @@ const addPatients = (newEntry: PatientsEntry): void => {
 export default {
     getPatients,
     getNonSensitivePatients,
-    addPatients
+    addPatients 
 };
