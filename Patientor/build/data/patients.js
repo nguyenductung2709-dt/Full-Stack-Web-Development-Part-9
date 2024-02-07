@@ -1,6 +1,6 @@
-import { PatientsEntry } from "../src/types/patientTypes";
-
-const patientsEntries: PatientsEntry[] = [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const patientsEntries = [
     {
         "id": "d2773336-f723-11e9-8f0b-362b9e155667",
         "name": "John McClane",
@@ -42,5 +42,4 @@ const patientsEntries: PatientsEntry[] = [
         "occupation": "Digital evangelist"
     }
 ];
-
-export default patientsEntries;
+exports.default = patientsEntries;
