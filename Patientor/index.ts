@@ -23,6 +23,21 @@ app.get('/api/patients', (_req, res) => {
   res.send(patientService.getNonSensitivePatients());
 });
 
+app.post('/api/patients', (req, res) => {
+  try {
+    const NewPatientsEntry = req.body;
+    const addedPatient = patientService.addPatients(NewPatientsEntry);
+    res.json(addedPatient);
+    console.log(addedPatient);
+  }catch (error: unknown) {
+    let errorMessage = 'Something went wrong.';
+    if (error instanceof Error) {
+      errorMessage += ' Error: ' + error.message;
+    }
+    res.status(400).send(errorMessage);
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
