@@ -1,6 +1,7 @@
 import express from 'express';
 import diagnoseService from './src/services/diagnoseService';
 import patientService from './src/services/patientService';
+import toNewPatientsEntry from './src/utils';
 const cors = require('cors');
 const app = express();
 app.use(express.json());
@@ -25,7 +26,7 @@ app.get('/api/patients', (_req, res) => {
 
 app.post('/api/patients', (req, res) => {
   try {
-    const NewPatientsEntry = req.body;
+    const NewPatientsEntry = toNewPatientsEntry(req.body);
     const addedPatient = patientService.addPatients(NewPatientsEntry);
     res.json(addedPatient);
     console.log(addedPatient);
