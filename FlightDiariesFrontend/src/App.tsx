@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Diaries from './components/Diaries';
+import DiaryForm from './components/DiaryForm';
 
 // Define Diary interface outside the component
-interface Diary {
+export interface Diary {
   id: string;
   date: string;
   weather: string;
@@ -25,6 +26,7 @@ const App: React.FC = () => {
   
   return (
     <div>
+      <DiaryForm/>
       <Diaries diaries={diaries}/>
     </div>
   );
