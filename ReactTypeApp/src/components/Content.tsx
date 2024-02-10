@@ -1,23 +1,12 @@
-import React from 'react';
+import Part from './Part';
 
-interface CoursePart {
-  name: string;
-  exerciseCount: number;
+interface ContentProps {
+  courseParts: any[]; 
 }
 
-interface Props {
-  courseParts: CoursePart[];
-}
-
-const Content: React.FC<Props> = ({ courseParts }) => {
+const Content: React.FC<ContentProps> = ({ courseParts }) => {
   return (
-    <div>
-      {courseParts.map((coursePart, index) => (
-        <p key={index}>
-          {coursePart.name} {coursePart.exerciseCount}
-        </p>
-      ))}
-    </div>
+    <Part courseParts={courseParts} />
   );
 }
 
