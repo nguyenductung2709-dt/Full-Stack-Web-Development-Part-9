@@ -26,7 +26,7 @@ app.get('/api/patients', (_req, res) => {
 
 app.get('/api/patients/:id', (req, res) => {
   const id = req.params.id;
-  const patients = patientService.getNonSensitivePatients();
+  const patients = patientService.getPatients();
   const patient = patients.find((patient) => patient.id === id);
   if (patient) {
     res.send(patient);
