@@ -51,15 +51,28 @@ const DiaryForm = () => {
             <form onSubmit={diaryCreation}>
                 <div>
                     date:
-                    <input type="text" value={date} onChange={({ target }) => setDate(target.value)} />
+                    <input type="date" value={date} onChange={({ target }) => setDate(target.value)} />
                 </div>
                 <div>
                     visibility:
-                    <input type="text" value={visibility} onChange={({ target }) => setVisibility(target.value)} />
+                    <select value={visibility} onChange={({ target }) => setVisibility(target.value)}>
+                        <option value="">Select visibility</option>
+                        <option value="great">Great</option>
+                        <option value="good">Good</option>
+                        <option value="ok">Ok</option>
+                        <option value="poor">Poor</option>
+                    </select>
                 </div>
                 <div>
                     weather:
-                    <input type="text" value={weather} onChange={({ target }) => setWeather(target.value)} />
+                    <select value={weather} onChange={({ target }) => setWeather(target.value)}>
+                        <option value="">Select weather</option>
+                        <option value="sunny">Sunny</option>
+                        <option value="rainy">Rainy</option>
+                        <option value="cloudy">Cloudy</option>
+                        <option value="stormy">Stormy</option>
+                        <option value="windy">Windy</option>
+                    </select>
                 </div>
                 <div>
                     comment:
