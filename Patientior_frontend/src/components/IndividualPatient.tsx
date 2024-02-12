@@ -1,13 +1,15 @@
-import { Patient, Entry } from '../types';
+import { Patient, Entry, Diagnosis } from '../types';
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import patientService from '../services/patients';
+import diagnoseService from '../services/diagnoses';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 
 const IndividualPatient = () => {
   const { id } = useParams();
   const [patient, setPatient] = useState<Patient | null>(null);
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[] | null>(null);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -28,6 +30,14 @@ const IndividualPatient = () => {
     };
   }, [id]);
 
+  useEffect(() => {
+    const fetchDiagnoses = async () => {
+      const diagnosesData = await diagnoseService.getAll();
+      setDiagnoses(diagnosesData);
+    }
+    fetchDiagnoses();
+  }, []); 
+
   const renderEntry = (entry: Entry) => {
     switch (entry.type) {
       case "Hospital":
@@ -38,9 +48,14 @@ const IndividualPatient = () => {
             </p>
             {entry.diagnosisCodes && (
               <ul>
-                {entry.diagnosisCodes.map((diagnosis, index) => (
-                  <li key={index}>{diagnosis}</li>
-                ))}
+                {entry.diagnosisCodes.map((diagnosisCode, index) => {
+                  const diagnosis = diagnoses?.find(diagnose => diagnose.code === diagnosisCode);
+                  return (
+                    <li key={index}>
+                      {diagnosisCode} {diagnosis ? diagnosis.name : 'Unknown Diagnosis'}
+                    </li>
+                  );
+                })}
               </ul>
             )}
             {entry.discharge && (
@@ -56,9 +71,14 @@ const IndividualPatient = () => {
             </p>
             {entry.diagnosisCodes && (
               <ul>
-                {entry.diagnosisCodes.map((diagnosis, index) => (
-                  <li key={index}>{diagnosis}</li>
-                ))}
+                {entry.diagnosisCodes.map((diagnosisCode, index) => {
+                  const diagnosis = diagnoses?.find(diagnose => diagnose.code === diagnosisCode);
+                  return (
+                    <li key={index}>
+                      {diagnosisCode} {diagnosis ? diagnosis.name : 'Unknown Diagnosis'}
+                    </li>
+                  );
+                })}
               </ul>
             )}
             {entry.sickLeave && (
