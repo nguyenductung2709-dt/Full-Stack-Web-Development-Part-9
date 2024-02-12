@@ -3,8 +3,12 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import patientService from '../services/patients';
 import diagnoseService from '../services/diagnoses';
+import '../css/individualPatient.css';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const IndividualPatient = () => {
   const { id } = useParams();
@@ -42,7 +46,7 @@ const IndividualPatient = () => {
     switch (entry.type) {
       case "Hospital":
         return (
-          <div key={entry.id}>
+          <div key={entry.id} className = "entry">
             <p>
               <span>{entry.date}</span> <span> <i>{entry.description}</i> </span>{" "}
             </p>
@@ -65,10 +69,11 @@ const IndividualPatient = () => {
         );
       case "OccupationalHealthcare":
         return (
-          <div key={entry.id}>
+          <div key={entry.id} className = "entry">
             <p>
-              <span>{entry.date}</span> <span> <i>{entry.description}</i> </span>{" "}
+              <span>{entry.date}</span> <span> <LocalPoliceIcon/> </span> <span> <i>{entry.employerName}</i> </span>{" "}
             </p>
+            <p> <i>{entry.description}</i> </p>
             {entry.diagnosisCodes && (
               <ul>
                 {entry.diagnosisCodes.map((diagnosisCode, index) => {
@@ -86,17 +91,17 @@ const IndividualPatient = () => {
             )}
           </div>
         );
-      case "HealthCheck":
-        return (
-          <div key={entry.id}>
-            <p>
-              <span>{entry.date}</span> <span> <i>{entry.description}</i> </span>{" "}
-            </p>
-            {entry.healthCheckRating && (
-              <p>Health Check Rating: {entry.healthCheckRating}</p>
-            )}
-          </div>
-        );
+        case "HealthCheck":
+          return (
+            <div key={entry.id} className = "entry">
+              <p> <span> {entry.date} </span> <span> <LocalHospitalIcon/> </span>  </p>
+              <p><i>{entry.description}</i></p>
+              {entry.healthCheckRating >= 0 && (
+                <FavoriteIcon/>
+              )}
+              <p> diagnose by {entry.specialist} </p>
+            </div>
+          );
       default:
         return null;
     }
@@ -114,9 +119,7 @@ const IndividualPatient = () => {
       </h2>
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
-      <p>
-        <strong> entries </strong>
-      </p>
+      <h2> entries </h2>
       {patient.entries.map(renderEntry)}
     </>
   );
