@@ -9,6 +9,7 @@ import MaleIcon from '@mui/icons-material/Male';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import HealthEntryForm from './HealthEntryForm';
 
 const IndividualPatient = () => {
   const { id } = useParams();
@@ -119,6 +120,7 @@ const IndividualPatient = () => {
       </h2>
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
+      <HealthEntryForm id = {id}/>
       <h2> entries </h2>
       {patient.entries.map(renderEntry)}
     </>
