@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Entry } from '../types';
+import { Entry, HealthCheckRating } from '../types';
 
 interface Props {
     id: string | undefined;
@@ -10,23 +10,50 @@ const HealthEntryForm = ({ id }: Props) => {
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
     const [specialist, setSpecialist] = useState('');
+    const [type, setType] = useState('');
+    const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating | null>(null);
     const [diagnoses, setDiagnoses] = useState<string[]>([]);
     const [dateOfDischarge, setDateOfDischarge] = useState('');
     const [criteria, setCriteria] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [employerName, setEmployerName] = useState('');
+
 
     const entryCreation = (event: React.FormEvent) => {
         event.preventDefault();
-        const newEntry = {
+        const baseEntry = {
             date: date,
-            type: "Hospital",
+            type: type,
             specialist: specialist,
             diagnosisCodes: diagnoses,
             description: description,
-            discharge: {
-                date: dateOfDischarge,
-                criteria: criteria
+        }
+        let newEntry = {}
+        if (type === "Hospital") {
+            newEntry = {
+                ...baseEntry,
+                discharge: {
+                    date: dateOfDischarge,
+                    criteria: criteria
+                }
+            };
+        } else if (type === "OccupationalHealthcare") {
+            newEntry = {
+                ...baseEntry,
+                employerName: employerName,
+                sickLeave: {
+                    startDate: startDate,
+                    endDate: endDate
+                }
             }
-        };
+        } else if (type === "HealthCheck") {
+            newEntry = {
+                ...baseEntry,
+                healthCheckRating: healthCheckRating
+            };
+        }
+
         axios.post<Entry>(`http://localhost:3000/api/patients/${id}/entries`, newEntry)
             .then(response => {
                 console.log(response.data);
@@ -54,6 +81,14 @@ const HealthEntryForm = ({ id }: Props) => {
                 <div> Date:
                     <input type="date" value={date} onChange={({ target }) => setDate(target.value)} />
                 </div>
+                <div> Type: 
+                    <select value = {type} onChange={({ target }) => setType(target.value)}>
+                        <option value="">Select type</option>
+                        <option value="OccupationalHealthcare">OccupationalHealthcare</option>
+                        <option value="Hospital">Hospital</option>
+                        <option value="HealthCheck">HealthCheck</option>
+                    </select>
+                </div>
                 <div> Description:
                     <input type="text" value={description} onChange={({ target }) => setDescription(target.value)} />
                 </div>
@@ -63,15 +98,44 @@ const HealthEntryForm = ({ id }: Props) => {
                 <div> Diagnoses codes:
                     <input type="text" value={diagnoses.join(',')} onChange={handleDiagnosesChange} />
                 </div>
-                <p> Discharge: </p>
-                <div>
-                    Date:
-                    <input type = "date" value = {dateOfDischarge} onChange = {({ target }) => setDateOfDischarge(target.value)} />
-                </div>
-                <div>
-                    Criteria:
-                    <input type = "text" value = {criteria} onChange = {({ target }) => setCriteria(target.value)} />
-                </div>
+                {type === "Hospital" &&
+                    <>
+                        <p> Discharge: </p>
+                        <div>
+                            Date:
+                            <input type="date" value={dateOfDischarge} onChange={({ target }) => setDateOfDischarge(target.value)} />
+                        </div>
+                        <div>
+                            Criteria:
+                            <input type="text" value={criteria} onChange={({ target }) => setCriteria(target.value)} />
+                        </div>
+                    </>
+                }
+                {type === "HealthCheck" &&
+                    <>
+                        <div>
+                            HealthCheckRating:
+                            <input type="number" value={healthCheckRating || ''} onChange={({ target }) => setHealthCheckRating(parseInt(target.value))} />
+                        </div>
+                    </>
+                }
+                {type === "OccupationalHealthcare" && 
+                    <>
+                        <div>
+                            Employer Name:
+                            <input type = "text" value = {employerName} onChange = {( {target }) => setEmployerName(target.value)} />
+                        </div>
+                        <p> Sick Leave: </p>
+                        <div>
+                            Start Date:
+                            <input type ="date" value = {startDate} onChange = {( { target }) => setStartDate(target.value)} />
+                        </div>
+                        <div>
+                            End Date: 
+                            <input type ="date" value = {endDate} onChange = {( { target }) => setEndDate(target.value)} />
+                        </div>
+                    </>
+                }
                 <button type="submit">Submit</button>
             </form>
         </>
