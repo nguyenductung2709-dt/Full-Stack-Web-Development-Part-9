@@ -1,4 +1,4 @@
-import { NewPatientsEntry, Gender, Entry } from './types/patientTypes'
+import { NewPatientsEntry, Gender, Entry, HealthCheckEntry, HospitalEntry, OccupationalHealthcareEntry, HealthCheckRating, SickLeave, Discharge } from './types/patientTypes';
 
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
@@ -58,7 +58,7 @@ const parseEntries = (entries: unknown[]): Entry[] => {
     return entries;
 };
 
-const toNewPatientsEntry = (object: unknown): NewPatientsEntry => {
+export const toNewPatientsEntry = (object: unknown): NewPatientsEntry => {
     if ( !object || typeof object !== 'object' ) {
         throw new Error('Incorrect or missing data');
       }
@@ -76,5 +76,98 @@ const toNewPatientsEntry = (object: unknown): NewPatientsEntry => {
     }
     throw new Error('Incorrect data: some fields are missing');
   }
-  
-export default toNewPatientsEntry;
+
+
+  interface BaseEntryData {
+    description: string;
+    date: string;
+    specialist: string;
+    diagnosisCodes?: string[];
+}
+
+interface HealthCheckEntryData extends BaseEntryData {
+    type: "HealthCheck";
+    healthCheckRating: HealthCheckRating;
+}
+
+interface HospitalEntryData extends BaseEntryData {
+    type: "Hospital";
+    discharge: Discharge;
+}
+
+interface OccupationalHealthcareEntryData extends BaseEntryData {
+    type: "OccupationalHealthcare";
+    employerName: string;
+    sickLeave?: SickLeave;
+}
+
+interface BaseEntryData {
+    description: string;
+    date: string;
+    specialist: string;
+    diagnosisCodes?: string[];
+}
+
+interface HealthCheckEntryData extends BaseEntryData {
+    type: "HealthCheck";
+    healthCheckRating: HealthCheckRating;
+}
+
+interface HospitalEntryData extends BaseEntryData {
+    type: "Hospital";
+    discharge: Discharge;
+}
+
+interface OccupationalHealthcareEntryData extends BaseEntryData {
+    type: "OccupationalHealthcare";
+    employerName: string;
+    sickLeave?: SickLeave;
+}
+
+export const toNewEntry = (object: unknown): Entry => {
+    if (!object || typeof object !== 'object' || Array.isArray(object)) {
+        throw new Error('Incorrect or missing data');
+    }
+
+    const baseData = object as BaseEntryData;
+
+    if (!('type' in baseData)) {
+        throw new Error('Incorrect or missing entry type');
+    }
+
+    switch (baseData.type) {
+        case "HealthCheck":
+            const healthCheckData = object as HealthCheckEntryData;
+            if (!('healthCheckRating' in healthCheckData)) {
+                throw new Error('Incorrect or missing health check rating');
+            }
+            return {
+                ...baseData,
+                ...healthCheckData
+            } as HealthCheckEntry;
+
+        case "Hospital":
+            const hospitalData = object as HospitalEntryData;
+            if (!('discharge' in hospitalData)) {
+                throw new Error('Incorrect or missing discharge information');
+            }
+            return {
+                ...baseData,
+                ...hospitalData
+            } as HospitalEntry;
+
+        case "OccupationalHealthcare":
+            const occupationalHealthcareData = object as OccupationalHealthcareEntryData;
+            if (!('employerName' in occupationalHealthcareData)) {
+                throw new Error('Incorrect or missing employer name');
+            }
+            return {
+                ...baseData,
+                ...occupationalHealthcareData
+            } as OccupationalHealthcareEntry;
+
+        default:
+            throw new Error('Incorrect or missing entry type');
+    }
+}
+

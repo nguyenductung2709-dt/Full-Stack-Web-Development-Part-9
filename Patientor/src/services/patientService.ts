@@ -1,4 +1,4 @@
-import { Patient, NonSensitivePatient, NewPatientsEntry } from '../types/patientTypes';
+import { Patient, NonSensitivePatient, NewPatientsEntry, Entry } from '../types/patientTypes';
 import patientsEntries  from '../../data/patients';
 import { v1 as uuid } from 'uuid'
 
@@ -20,8 +20,17 @@ const addPatients = (newEntry: NewPatientsEntry): Patient => {
     return newestEntry;
 };
 
+const addEntry = (newEntry: Entry, id: string): Entry => {
+    const patient = patientsEntries.find((patient) => patient.id === id);
+    if (patient) {
+        patient.entries.push(newEntry);
+    }
+    return newEntry;
+}
+
 export default {
     getPatients,
     getNonSensitivePatients,
-    addPatients 
+    addPatients,
+    addEntry
 };
