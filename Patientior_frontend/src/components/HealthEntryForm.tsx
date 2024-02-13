@@ -115,7 +115,13 @@ const HealthEntryForm = ({ id }: Props) => {
                     <>
                         <div>
                             HealthCheckRating:
-                            <input type="number" value={healthCheckRating || ''} onChange={({ target }) => setHealthCheckRating(parseInt(target.value))} />
+                            <select value={healthCheckRating || ''} onChange={({ target }) => setHealthCheckRating(parseInt(target.value))}>
+                                <option value="">Select rating</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
                         </div>
                     </>
                 }
